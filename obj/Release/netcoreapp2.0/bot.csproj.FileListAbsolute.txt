@@ -1,0 +1,10 @@
+D:\Проекты VS\bot\bot\bin\Release\netcoreapp2.0\bot.deps.json
+D:\Проекты VS\bot\bot\bin\Release\netcoreapp2.0\bot.runtimeconfig.json
+D:\Проекты VS\bot\bot\bin\Release\netcoreapp2.0\bot.runtimeconfig.dev.json
+D:\Проекты VS\bot\bot\bin\Release\netcoreapp2.0\bot.dll
+D:\Проекты VS\bot\bot\bin\Release\netcoreapp2.0\bot.pdb
+D:\Проекты VS\bot\bot\obj\Release\netcoreapp2.0\bot.csproj.CoreCompileInputs.cache
+D:\Проекты VS\bot\bot\obj\Release\netcoreapp2.0\bot.AssemblyInfoInputs.cache
+D:\Проекты VS\bot\bot\obj\Release\netcoreapp2.0\bot.AssemblyInfo.cs
+D:\Проекты VS\bot\bot\obj\Release\netcoreapp2.0\bot.dll
+D:\Проекты VS\bot\bot\obj\Release\netcoreapp2.0\bot.pdb
