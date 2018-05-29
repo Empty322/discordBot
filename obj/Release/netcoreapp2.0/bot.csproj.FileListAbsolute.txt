@@ -8,3 +8,5 @@ D:\Проекты VS\bot\bot\obj\Release\netcoreapp2.0\bot.AssemblyInfoInputs.ca
 D:\Проекты VS\bot\bot\obj\Release\netcoreapp2.0\bot.AssemblyInfo.cs
 D:\Проекты VS\bot\bot\obj\Release\netcoreapp2.0\bot.dll
 D:\Проекты VS\bot\bot\obj\Release\netcoreapp2.0\bot.pdb
+D:\Проекты VS\bot\bot\obj\Release\netcoreapp2.0\bot.csprojResolveAssemblyReference.cache
+D:\Проекты VS\bot\bot\bin\Release\netcoreapp2.0\appsettings.json

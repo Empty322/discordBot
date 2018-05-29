@@ -2,26 +2,33 @@
 using Discord;
 using Discord.WebSocket;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace bot
 {
     class Program
     {
+		public static IConfiguration Configuration { get; set; }
 		private DiscordSocketClient client;
 
         static void Main(string[] args)
         {
+			var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
+			Configuration = builder.Build();
 			new Program().StartAsync().GetAwaiter().GetResult();
         }
 
 		private async Task StartAsync()
 		{
 			client = new DiscordSocketClient();
-			await client.LoginAsync(TokenType.Bot, "NDUwNjUzNTMzNDk1MDk5Mzkz.De2cPA.26XcebFedCvxlXmczqAggo9_iFQ");
+			await client.LoginAsync(TokenType.Bot, Configuration["token"]);
 			await client.StartAsync();
-			Console.WriteLine("1");
+			Console.WriteLine("Logged in as");
+			//Console.WriteLine(client.CurrentUser.Username);
+			//Console.WriteLine(client.ShardId);
 			await Task.Delay(-1);
-			Console.WriteLine("2");
+			Console.WriteLine("Stopped");
 		}
     }
 }
