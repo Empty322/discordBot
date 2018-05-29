@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using bot.Models;
+using System.Numerics;
 using System.Text;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace bot.Services
 {
     public class ZagadkaService
     {
-		private KeyValuePair<string, string>[] zagadki;
+		private Zagadka[] zagadki;
 		private DateTime last;
 		private TimeSpan interval;
 		private string answer;
@@ -14,7 +18,7 @@ namespace bot.Services
 
 		public ZagadkaService()
 		{
-			zagadki[0] = new KeyValuePair<string, string>("загадка типа", "ответ");
+			JsonConvert.DeserializeObject<Zagadka[]>(File.ReadAllText(Directory.GetCurrentDirectory() + "/zagadki.json"));
 
 			interval = new TimeSpan(0, 0, 10);
 			last = DateTime.Now;
@@ -25,10 +29,11 @@ namespace bot.Services
 		{
 			if (DateTime.Now - last > interval)
 			{
+				guessed = false;
 				Random rnd = new Random();
 				int i = rnd.Next(zagadki.Length - 1);
-				answer = zagadki[i].Value;
-				return zagadki[i].Key;
+				answer = zagadki[i].otvet;
+				return zagadki[i].zagadka;
 			}
 			return "время не прошло";
 		}

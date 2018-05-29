@@ -55,6 +55,7 @@ namespace bot
 				.AddSingleton<CommandService>()
 				.AddSingleton<CommandHandlingService>()
 				.AddSingleton<HttpClient>()
+				.AddSingleton<ZagadkaService>()
 				.AddSingleton<PictureService>()
 				.BuildServiceProvider();
 		}

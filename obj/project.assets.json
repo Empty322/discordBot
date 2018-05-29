@@ -4855,7 +4855,8 @@
     ".NETCoreApp,Version=v2.0": [
       "Discord.Net >= 2.0.0-beta",
       "Microsoft.Extensions.Configuration.Json >= 2.1.0-rc1-final",
-      "Microsoft.NETCore.App >= 2.0.0"
+      "Microsoft.NETCore.App >= 2.0.0",
+      "Newtonsoft.Json >= 11.0.2"
     ]
   },
   "packageFolders": {
@@ -4911,6 +4912,10 @@
             "target": "Package",
             "version": "[2.0.0, )",
             "autoReferenced": true
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[11.0.2, )"
           }
         },
         "imports": [

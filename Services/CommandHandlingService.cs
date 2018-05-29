@@ -29,17 +29,13 @@ namespace bot.Services
 
 		public async Task MessageReceivedAsync(SocketMessage rawMessage)
 		{
-			Console.WriteLine(rawMessage.ToString());
 			// Ignore system messages, or messages from other bots
 			if(!(rawMessage is SocketUserMessage message)) return;
-			Console.WriteLine("SocketUserMessage");
 			if(message.Source != MessageSource.User) return;
-			Console.WriteLine("Source");			
 
 			// This value holds the offset where the prefix ends
 			var argPos = 0;
 			if(!(message.HasCharPrefix('!', ref argPos) || message.HasMentionPrefix(discord.CurrentUser, ref argPos))) return;
-			Console.WriteLine("Prefix");
 
 			var context = new SocketCommandContext(discord, message);
 			var result = await commands.ExecuteAsync(context, argPos, services);
