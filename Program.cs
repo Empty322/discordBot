@@ -64,6 +64,7 @@ namespace bot
 				.AddSingleton<HttpClient>()
 				.AddSingleton<ZagadkaService>()
 				.AddSingleton<PictureService>()
+				.AddSingleton<ReputationService>()
 				.BuildServiceProvider();
 		}
     }

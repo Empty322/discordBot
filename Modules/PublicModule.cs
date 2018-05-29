@@ -12,7 +12,7 @@ namespace bot.Modules
 		// Dependency Injection will fill this value in for us
 		public PictureService PictureService { get; set; }
 		public ZagadkaService ZagadkaService { get; set; }
-
+		public ReputationService ReputationService { get; set; }
 
 		[Command("загадку")]
 		[Alias("загадочку мне")]
@@ -29,10 +29,10 @@ namespace bot.Modules
 				case AnswerResult.Guessed:
 					break;
 				case AnswerResult.WrongAnswer:
-					// забрать репутацию
+					ReputationService.ChangeRep(Context.User, -3);
 					break;
 				case AnswerResult.CurrectAnswer:
-					// накинуть репутации
+					ReputationService.ChangeRep(Context.User, 10);
 					await ReplyAsync("Верно");
 					break;
 			}
