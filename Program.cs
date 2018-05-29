@@ -1,15 +1,20 @@
 ﻿using System;
-using Discord;
-using Discord.WebSocket;
+using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using System.IO;
+using Microsoft.Extensions.DependencyInjection;
+using Discord;
+using Discord.WebSocket;
+using Discord.Commands;
+using bot.Services;
 
 namespace bot
 {
     class Program
     {
 		public static IConfiguration Configuration { get; set; }
+
 		private DiscordSocketClient client;
 
         static void Main(string[] args)
@@ -21,14 +26,39 @@ namespace bot
 
 		private async Task StartAsync()
 		{
-			client = new DiscordSocketClient();
+			var services = ConfigureServices();
+			
+			client = services.GetRequiredService<DiscordSocketClient>();
+			client.Ready += ReadyAsync;
+			client.Log += LogAsync;
 			await client.LoginAsync(TokenType.Bot, Configuration["token"]);
 			await client.StartAsync();
-			Console.WriteLine("Logged in as");
-			//Console.WriteLine(client.CurrentUser.Username);
-			//Console.WriteLine(client.ShardId);
+			await services.GetRequiredService<CommandHandlingService>().InitializeAsync();
 			await Task.Delay(-1);
-			Console.WriteLine("Stopped");
+		}
+
+		private Task LogAsync(LogMessage log)
+		{
+			Console.WriteLine(log.ToString());
+			return Task.CompletedTask;
+		}
+
+		private Task ReadyAsync() {
+			Console.WriteLine($"{client.CurrentUser} is connected!");
+			return Task.CompletedTask;
+		}
+
+
+
+		private IServiceProvider ConfigureServices()
+		{
+			return new ServiceCollection()
+				.AddSingleton<DiscordSocketClient>()
+				.AddSingleton<CommandService>()
+				.AddSingleton<CommandHandlingService>()
+				.AddSingleton<HttpClient>()
+				.AddSingleton<PictureService>()
+				.BuildServiceProvider();
 		}
     }
 }
