@@ -47,9 +47,7 @@ namespace bot
 			Console.WriteLine($"{client.CurrentUser} is connected!");
 			return Task.CompletedTask;
 		}
-
-
-
+		
 		private IServiceProvider ConfigureServices()
 		{
 			return new ServiceCollection()

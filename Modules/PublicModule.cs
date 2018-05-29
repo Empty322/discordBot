@@ -11,6 +11,20 @@ namespace bot.Modules
 	{
 		// Dependency Injection will fill this value in for us
 		public PictureService PictureService { get; set; }
+		public ZagadkaService ZagadkaService { get; set; }
+
+		[Command("загадку")]
+		[Alias("загадочку мне")]
+		public async Task Zagadka()
+		{
+			await ReplyAsync(ZagadkaService.GetZagadku());
+		}
+
+		[Command("ответ")]
+		public async Task Answer(string ans)
+		{
+			await ReplyAsync(ZagadkaService.CheckAnswer(ans));
+		}
 
 		[Command("ping")]
 		[Alias("pong", "hello")]
