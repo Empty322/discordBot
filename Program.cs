@@ -19,16 +19,27 @@ namespace bot
 			new Program().StartAsync().GetAwaiter().GetResult();
         }
 
-		private async Task StartAsync()
-		{
-			client = new DiscordSocketClient();
-			await client.LoginAsync(TokenType.Bot, Configuration["token"]);
-			await client.StartAsync();
-			Console.WriteLine("Logged in as");
-			//Console.WriteLine(client.CurrentUser.Username);
-			//Console.WriteLine(client.ShardId);
-			await Task.Delay(-1);
-			Console.WriteLine("Stopped");
-		}
+	private async Task StartAsync()
+	{
+		client = new DiscordSocketClient();
+		client.Ready += ReadyAsync;
+		client.MessageReceived += MessageReceivedAsync;
+		await client.LoginAsync(TokenType.Bot, Configuration["token"]);
+		await client.StartAsync();
+		await Task.Delay(-1);
+	}
+
+	private Task ReadyAsync() {
+		Console.WriteLine($"{client.CurrentUser} is connected!");
+		return Task.CompletedTask;
+	}
+	
+	private async Task MessageReceivedAsync(SocketMessage message)
+	{
+		if(message.Author.Id == client.CurrentUser.Id)
+			return;
+		if(message.Content == "!ping")
+			await message.Channel.SendMessageAsync("pong!");
+	}
     }
 }
