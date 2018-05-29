@@ -38,15 +38,15 @@ namespace bot.Services
 			return "время не прошло";
 		}
 
-		public string CheckAnswer(string ans)
+		public AnswerResult CheckAnswer(string ans)
 		{
 			if(guessed)
-				return "Загадка уже отгадана";
+				return AnswerResult.Guessed;
 			if(ans != answer)
-				return "Неправильный ответ";
+				return AnswerResult.WrongAnswer;
 			last = DateTime.Now;
 			guessed = true;
-			return "Верно";
+			return AnswerResult.CurrectAnswer;
 		}
     }
 }

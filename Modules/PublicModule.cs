@@ -13,6 +13,7 @@ namespace bot.Modules
 		public PictureService PictureService { get; set; }
 		public ZagadkaService ZagadkaService { get; set; }
 
+
 		[Command("загадку")]
 		[Alias("загадочку мне")]
 		public async Task Zagadka()
@@ -23,7 +24,18 @@ namespace bot.Modules
 		[Command("ответ")]
 		public async Task Answer(string ans)
 		{
-			await ReplyAsync(ZagadkaService.CheckAnswer(ans));
+			switch (ZagadkaService.CheckAnswer(ans))
+			{
+				case AnswerResult.Guessed:
+					break;
+				case AnswerResult.WrongAnswer:
+					// забрать репутацию
+					break;
+				case AnswerResult.CurrectAnswer:
+					// накинуть репутации
+					await ReplyAsync("Верно");
+					break;
+			}
 		}
 
 		[Command("ping")]

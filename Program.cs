@@ -11,6 +11,13 @@ using bot.Services;
 
 namespace bot
 {
+	public enum AnswerResult
+	{
+		Guessed = 0,
+		WrongAnswer = 1,
+		CurrectAnswer = 2
+	}
+
     class Program
     {
 		public static IConfiguration Configuration { get; set; }
