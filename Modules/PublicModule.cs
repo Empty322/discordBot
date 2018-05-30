@@ -48,6 +48,15 @@ namespace bot.Modules
             await Context.Channel.SendFileAsync(stream, "meme.png");
         }
 
+		[Command("rank")]
+		[Alias("ранг", "rep")]
+		public async Task Rank()
+		{
+			IUser user = Context.User;
+			int rep = ReputationService.GetRepByUser(user);
+			await ReplyAsync($"Ранг пользователя {user.Username} cocтавляет {rep} очков.");
+		}
+
 		[Command("ping")]
 		[Alias("pong", "hello")]
 		public Task PingAsync()

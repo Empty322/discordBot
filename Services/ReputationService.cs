@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using bot.Models;
 using Discord;
 using Newtonsoft.Json;
@@ -20,13 +19,25 @@ namespace bot.Services
 				users = JsonConvert.DeserializeObject<List<User>>(File.ReadAllText(Directory.GetCurrentDirectory() + "/reps.json"));
 		}
 
-		public void ChangeRep(IUser user, int rep)
+		public void ChangeRep(IUser iuser, int rep)
 		{
-			if (users.Find(u => u.user == user.ToString()) == null)
-			{
+			User user = users.Find(u => u.user == iuser.ToString());
+			if(user == null)
 				users.Add(new User(user.ToString(), rep));
-			}
+			else
+				user.reputation += rep;
 			File.WriteAllText(Directory.GetCurrentDirectory() + "/reps.json", JsonConvert.SerializeObject(users));
+		}
+
+		public int GetRepByUser(IUser iuser)
+		{
+			int rep = 0;
+			User user = users.Find(u => u.user == iuser.ToString());
+			if(user == null)
+			{
+				return rep;
+			}
+			return user.reputation;
 		}
 	}
 }
