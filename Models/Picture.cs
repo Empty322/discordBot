@@ -4,9 +4,8 @@ using System.Text;
 
 namespace bot.Models
 {
-    class Zagadka
+    class Picture
     {
-		public string zagadka = "";
-		public string otvet = "";
+        public string url = "";
     }
 }

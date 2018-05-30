@@ -15,13 +15,14 @@ namespace bot.Modules
 		public ReputationService ReputationService { get; set; }
 
 		[Command("загадку")]
-		[Alias("загадочку мне")]
+		[Alias("загадочку мне", "загадочка", "загадочку", "загадка", "загадку мне")]
 		public async Task Zagadka()
 		{
 			await ReplyAsync(ZagadkaService.GetZagadku());
 		}
 
 		[Command("ответ")]
+        [Alias("изи", "ответик")]
 		public async Task Answer(string ans)
 		{
 			switch (ZagadkaService.CheckAnswer(ans))
@@ -37,6 +38,15 @@ namespace bot.Modules
 					break;
 			}
 		}
+
+        [Command("смешнявку")]
+        [Alias("meme", "мемас", "картинку")]
+        public async Task PictureAsync()
+        {
+            var stream = await PictureService.GetPictureAsync();
+            stream.Seek(0, SeekOrigin.Begin);
+            await Context.Channel.SendFileAsync(stream, "meme.png");
+        }
 
 		[Command("ping")]
 		[Alias("pong", "hello")]

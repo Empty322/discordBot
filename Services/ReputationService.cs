@@ -14,10 +14,10 @@ namespace bot.Services
 
 		public ReputationService()
 		{
-			if(!File.Exists(Directory.GetCurrentDirectory() + "/reps"))
+			if(!File.Exists(Directory.GetCurrentDirectory() + "/reps.json"))
 				users = new List<User>();
 			else
-				users = JsonConvert.DeserializeObject<List<User>>(File.ReadAllText(Directory.GetCurrentDirectory() + "/reps"));
+				users = JsonConvert.DeserializeObject<List<User>>(File.ReadAllText(Directory.GetCurrentDirectory() + "/reps.json"));
 		}
 
 		public void ChangeRep(IUser user, int rep)
@@ -26,7 +26,7 @@ namespace bot.Services
 			{
 				users.Add(new User(user.ToString(), rep));
 			}
-			File.WriteAllText(File.ReadAllText(Directory.GetCurrentDirectory() + "/reps"), JsonConvert.SerializeObject(users));
+			File.WriteAllText(Directory.GetCurrentDirectory() + "/reps.json", JsonConvert.SerializeObject(users));
 		}
 	}
 }
