@@ -23,9 +23,11 @@ namespace bot.Services
 		{
 			User user = users.Find(u => u.user == iuser.ToString());
 			if(user == null)
-				users.Add(new User(user.ToString(), rep));
-			else
+				users.Add(new User(iuser.ToString(), 0 >= user.reputation ? 0 : rep));
+			else{
 				user.reputation += rep;
+				user.reputation = 0 >= user.reputation ? 0 : rep;
+			}
 			File.WriteAllText(Directory.GetCurrentDirectory() + "/reps.json", JsonConvert.SerializeObject(users));
 		}
 

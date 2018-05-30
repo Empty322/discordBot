@@ -54,7 +54,7 @@ namespace bot.Modules
 		{
 			IUser user = Context.User;
 			int rep = ReputationService.GetRepByUser(user);
-			await ReplyAsync($"Ранг пользователя {user.Username} cocтавляет {rep} очков.");
+			await ReplyAsync($"Ранг пользователя {user.Username} cocтавляет {rep}.");
 		}
 
 		[Command("ping")]
