@@ -1,3 +1,4 @@
+using System;
 ﻿using System.IO;
 using System.Threading.Tasks;
 using Discord;
@@ -23,8 +24,13 @@ namespace bot.Modules
 
 		[Command("ответ")]
         [Alias("изи", "ответик")]
-		public async Task Answer(string ans)
+		public async Task Answer(params string[] answerWords)
 		{
+			string ans = "";
+			for (int i = 0; answerWords.Length > i; i++)
+				ans += answerWords[i] + ' ';
+			ans = ans.Substring(0, ans.Length - 1);
+			Console.WriteLine("'" + ans + "'");
 			switch (ZagadkaService.CheckAnswer(ans))
 			{
 				case AnswerResult.Guessed:
