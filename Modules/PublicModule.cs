@@ -69,7 +69,7 @@ namespace bot.Modules
 				user = users[0];
 			}
 			int rep = ReputationService.GetRepByUser(user);
-			if(rep == -100)
+			if(rep == -1)
 			{
 				await ReplyAsync("Izvini, takoy so mnoy eshe ne igralsya");
 			}
