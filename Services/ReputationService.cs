@@ -31,13 +31,13 @@ namespace bot.Services
 			File.WriteAllText(Directory.GetCurrentDirectory() + "/reps.json", JsonConvert.SerializeObject(users));
 		}
 
-		public int GetRepByUser(IUser iuser)
+		public int GetRepByUser(string iuser)
 		{
 			int rep = 0;
-			User user = users.Find(u => u.user == iuser.ToString());
+			User user = users.Find(u => u.user == iuser);
 			if(user == null)
 			{
-				return rep;
+				return -100;
 			}
 			return user.reputation;
 		}
