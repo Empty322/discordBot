@@ -15,7 +15,7 @@ namespace bot
 	{
 		Guessed = 0,
 		WrongAnswer = 1,
-		CurrectAnswer = 2
+		CorrectAnswer = 2
 	}
 
     class Program
