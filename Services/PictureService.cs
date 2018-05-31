@@ -11,7 +11,7 @@ namespace bot.Services
 	public class PictureService
 	{
 		private readonly HttpClient http;
-        private List<Picture> pictures;
+        private readonly List<Picture> pictures;
         Random rnd;
 
 		public PictureService(HttpClient http)
@@ -20,12 +20,6 @@ namespace bot.Services
 			this.http = http;
             pictures = JsonConvert.DeserializeObject<List<Picture>>(File.ReadAllText(Directory.GetCurrentDirectory() + "/pictures.json"));
         }
-
-		public async Task<Stream> GetCatPictureAsync()
-		{
-			var resp = await http.GetAsync("https://cataas.com/cat");
-			return await resp.Content.ReadAsStreamAsync();
-		}
 
         public async Task<Stream> GetPictureAsync()
         {

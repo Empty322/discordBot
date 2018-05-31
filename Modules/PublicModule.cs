@@ -24,13 +24,10 @@ namespace bot.Modules
 
 		[Command("ответ")]
 		[Alias("изи", "ответик")]
-		public async Task Answer(params string[] answerWords)
+		public async Task Answer([Remainder] string ans)
 		{
 			IUser user = Context.User;
-			string ans = "";
-			for (int i = 0; answerWords.Length > i; i++)
-				ans += answerWords[i] + ' ';
-			ans = ans.Substring(0, ans.Length - 1);
+
 			switch (ZagadkaService.CheckAnswer(ans))
 			{
 				case AnswerResult.Guessed:
@@ -57,25 +54,17 @@ namespace bot.Modules
 
 		[Command("rank")]
 		[Alias("ранг", "rep")]
-		public async Task Rank(params string[] users)
+		public async Task Rank(IUser user = null)
 		{
-			string user = "";
-			if (users.Length == 0)
-			{
-				user = Context.User.ToString();
-			}
-			else
-			{
-				user = users[0];
-			}
-			int rep = ReputationService.GetRepByUser(user);
+			user = user ?? Context.User;
+			int rep = ReputationService.GetRepByUser(user.ToString());
 			if(rep == -1)
 			{
 				await ReplyAsync("Izvini, takoy so mnoy eshe ne igralsya");
 			}
 			else
 			{
-				await ReplyAsync($"Ранг пользователя {user} cocтавляет {rep}.");
+				await ReplyAsync($"Ранг пользователя {user.ToString()} cocтавляет {rep}.");
 			}
 		}
 
@@ -84,15 +73,6 @@ namespace bot.Modules
 		public Task PingAsync()
 			=> ReplyAsync("pong!");
 
-		[Command("cat")]
-		public async Task CatAsync()
-		{
-			// Get a stream containing an image of a cat
-			var stream = await PictureService.GetCatPictureAsync();
-			// Streams must be seeked to their beginning before being uploaded!
-			stream.Seek(0, SeekOrigin.Begin);
-			await Context.Channel.SendFileAsync(stream, "cat.png");
-		}
 
 		// Get info on a user, or the user who invoked the command if one is not specified
 		[Command("userinfo")]
