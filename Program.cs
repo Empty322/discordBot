@@ -15,21 +15,21 @@ namespace bot
 	{
 		Guessed = 0,
 		WrongAnswer = 1,
-		CurrectAnswer = 2
+		CorrectAnswer = 2
 	}
 
-    class Program
-    {
+	class Program
+	{
 		public static IConfiguration Configuration { get; set; }
 
 		private DiscordSocketClient client;
 
-        static void Main(string[] args)
-        {
+		static void Main(string[] args)
+		{
 			var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
 			Configuration = builder.Build();
 			new Program().StartAsync().GetAwaiter().GetResult();
-        }
+		}
 
 		private async Task StartAsync()
 		{

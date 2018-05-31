@@ -23,44 +23,60 @@ namespace bot.Modules
 		}
 
 		[Command("ответ")]
-        [Alias("изи", "ответик")]
+		[Alias("изи", "ответик")]
 		public async Task Answer(params string[] answerWords)
 		{
+			IUser user = Context.User;
 			string ans = "";
 			for (int i = 0; answerWords.Length > i; i++)
 				ans += answerWords[i] + ' ';
 			ans = ans.Substring(0, ans.Length - 1);
-			Console.WriteLine("'" + ans + "'");
 			switch (ZagadkaService.CheckAnswer(ans))
 			{
 				case AnswerResult.Guessed:
 					break;
 				case AnswerResult.WrongAnswer:
 					ReputationService.ChangeRep(Context.User, -3);
+					await ReplyAsync($"Neverno, {user.Username}.");
 					break;
-				case AnswerResult.CurrectAnswer:
+				case AnswerResult.CorrectAnswer:
 					ReputationService.ChangeRep(Context.User, 10);
-					await ReplyAsync("Верно");
+					await ReplyAsync($"Верно, {user.Username}.");
 					break;
 			}
 		}
 
-        [Command("смешнявку")]
-        [Alias("meme", "мемас", "картинку")]
-        public async Task PictureAsync()
-        {
-            var stream = await PictureService.GetPictureAsync();
-            stream.Seek(0, SeekOrigin.Begin);
-            await Context.Channel.SendFileAsync(stream, "meme.png");
-        }
+	        [Command("смешнявку")]
+		[Alias("meme", "мемас", "картинку")]
+		public async Task PictureAsync()
+		{
+			var stream = await PictureService.GetPictureAsync();
+			stream.Seek(0, SeekOrigin.Begin);
+			await Context.Channel.SendFileAsync(stream, "meme.png");
+		}
 
 		[Command("rank")]
 		[Alias("ранг", "rep")]
-		public async Task Rank()
+		public async Task Rank(params string[] users)
 		{
-			IUser user = Context.User;
+			string user = "";
+			if (users.Length == 0)
+			{
+				user = Context.User.ToString();
+			}
+			else
+			{
+				user = users[0];
+			}
 			int rep = ReputationService.GetRepByUser(user);
-			await ReplyAsync($"Ранг пользователя {user.Username} cocтавляет {rep}.");
+			if(rep == -100)
+			{
+				await ReplyAsync("Izvini, takoy so mnoy eshe ne igralsya");
+			}
+			else
+			{
+				await ReplyAsync($"Ранг пользователя {user} cocтавляет {rep}.");
+			}
 		}
 
 		[Command("ping")]

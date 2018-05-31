@@ -41,15 +41,41 @@ namespace bot.Services
 			return "время не прошло";
 		}
 
+
+		private bool CheckAbout(string ans)
+		{
+			double times = 0;
+			for(int i = 0; (ans.Length > i) && (answer.Length) > i; ++i)
+			{
+				if(ans.ToLower()[i] != answer.ToLower()[i])
+				{
+					times+= 1;
+				}
+			}
+			times += Math.Abs(ans.Length - answer.Length);
+			double difference = times / (double)answer.Length;
+			//Console.WriteLine(times);
+			//Console.WriteLine(answer.Length);
+			//Console.WriteLine(difference);
+			if(difference > 0.2)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+
 		public AnswerResult CheckAnswer(string ans)
 		{
 			if(guessed)
 				return AnswerResult.Guessed;
-			if(ans.ToLower() != answer.ToLower())
+			if(!CheckAbout(ans))
 				return AnswerResult.WrongAnswer;
 			last = DateTime.Now;
 			guessed = true;
-			return AnswerResult.CurrectAnswer;
+			return AnswerResult.CorrectAnswer;
 		}
     }
 }
