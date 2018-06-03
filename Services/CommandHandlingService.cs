@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Discord.Audio;
 using System.Threading.Tasks;
 
 namespace bot.Services
@@ -19,6 +20,7 @@ namespace bot.Services
 			commands = services.GetRequiredService<CommandService>();
 			discord = services.GetRequiredService<DiscordSocketClient>();
 			this.services = services;
+
 			discord.MessageReceived += MessageReceivedAsync;
 		}
 
@@ -31,12 +33,12 @@ namespace bot.Services
 		{
 			// Ignore system messages, or messages from other bots
 			if(!(rawMessage is SocketUserMessage message)) return;
+
 			if(message.Source != MessageSource.User) return;
 
 			// This value holds the offset where the prefix ends
 			var argPos = 0;
 			if(!(message.HasCharPrefix('!', ref argPos) || message.HasMentionPrefix(discord.CurrentUser, ref argPos))) return;
-
 			var context = new SocketCommandContext(discord, message);
 			var result = await commands.ExecuteAsync(context, argPos, services);
 

@@ -11,7 +11,7 @@ using bot.Services;
 
 namespace bot
 {
-	public enum AnswerResult
+    public enum AnswerResult
 	{
 		Guessed = 0,
 		WrongAnswer = 1,
@@ -59,6 +59,8 @@ namespace bot
 		{
 			return new ServiceCollection()
 				.AddSingleton<DiscordSocketClient>()
+				.AddSingleton<AudioService>()
+				.AddSingleton<DownloadService>()
 				.AddSingleton<CommandService>()
 				.AddSingleton<CommandHandlingService>()
 				.AddSingleton<HttpClient>()

@@ -1,19 +1,18 @@
-using System;
-﻿using System.IO;
 using System.Threading.Tasks;
 using Discord;
+using Discord.WebSocket;
 using Discord.Commands;
 using bot.Services;
 
 namespace bot.Modules
 {
-	// Modules must be public and inherit from an IModuleBase
-	public class PublicModule : ModuleBase<SocketCommandContext>
+    // Modules must be public and inherit from an IModuleBase
+    public class PublicModule : ModuleBase<SocketCommandContext>
 	{
 		// Dependency Injection will fill this value in for us
-		public PictureService PictureService { get; set; }
 		public ZagadkaService ZagadkaService { get; set; }
 		public ReputationService ReputationService { get; set; }
+		public DiscordSocketClient Discord { get; set; }
 
 		[Command("загадку")]
 		[Alias("загадочку мне", "загадочка", "загадочку", "загадка", "загадку мне")]
@@ -41,15 +40,6 @@ namespace bot.Modules
 					await ReplyAsync($"Верно, {user.Username}.");
 					break;
 			}
-		}
-
-	        [Command("смешнявку")]
-		[Alias("meme", "мемас", "картинку")]
-		public async Task PictureAsync()
-		{
-			var stream = await PictureService.GetPictureAsync();
-			stream.Seek(0, SeekOrigin.Begin);
-			await Context.Channel.SendFileAsync(stream, "meme.png");
 		}
 
 		[Command("rank")]
