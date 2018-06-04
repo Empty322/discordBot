@@ -16,31 +16,47 @@ namespace bot.Services
 		private string answer;
 		private bool guessed;
 		private bool flag;
+        private Random rnd;
+        private TimeSpan intervalForSkip;
 
 		public ZagadkaService()
 		{
 			zagadki = JsonConvert.DeserializeObject<List<Zagadka>>(File.ReadAllText(Directory.GetCurrentDirectory() + "/questions.json"));
 
-			interval = new TimeSpan(0, 0, 10);
+			interval = new TimeSpan(0, 0, 30);
+            intervalForSkip = new TimeSpan(0, 5, 0);
 			last = DateTime.Now;
 			guessed = false;
 			flag = true;
-		}
+            rnd = new Random();
+        }
 
 		public string GetZagadku()
 		{
+            if (!guessed && !flag)
+            {
+                return "Сначала отгадай загадку, потом проси новую";
+            }
 			if ((DateTime.Now - last > interval && guessed) || flag)
 			{
 				flag = false;
 				guessed = false;
-				Random rnd = new Random();
 				int i = rnd.Next(zagadki.Count - 1);
 				answer = zagadki[i].otvet;
 				return zagadki[i].zagadka;
 			}
-			return "время не прошло";
+			return "Подождите немного. Интервал между разгадкой и новой загадкой 30 секунд";
 		}
 
+        public string SkipZagadku()
+        {
+            if(DateTime.Now - last > intervalForSkip)
+            {
+                guessed = true;
+                return "Никто не угадал. Ну и ладно, вот вам новая загадка:\n" + GetZagadku();
+            }
+            return "5 минут еще не прошло. Не торопись, подумай получше";
+        }
 
 		private bool CheckAbout(string ans)
 		{

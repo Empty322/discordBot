@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using bot.Services;
+using Discord.WebSocket;
 
 namespace bot.Modules
 {
@@ -14,13 +15,26 @@ namespace bot.Modules
 		public PictureService PictureService { get; set; }
 		public ZagadkaService ZagadkaService { get; set; }
 		public ReputationService ReputationService { get; set; }
+        public DiscordSocketClient Discord { get; set; }
 
-		[Command("загадку")]
+        [Command("загадку")]
 		[Alias("загадочку мне", "загадочка", "загадочку", "загадка", "загадку мне")]
 		public async Task Zagadka()
 		{
+            foreach(var element in Discord.Guilds)
+            {
+                Console.WriteLine(element.ToString());
+            }
 			await ReplyAsync(ZagadkaService.GetZagadku());
 		}
+
+
+        [Command("пропустить")]
+        [Alias("скипнуть", "скип", "skip")]
+        public async Task Skip()
+        {
+            await ReplyAsync(ZagadkaService.SkipZagadku());
+        }
 
 		[Command("ответ")]
 		[Alias("изи", "ответик")]
@@ -37,11 +51,11 @@ namespace bot.Modules
 					break;
 				case AnswerResult.WrongAnswer:
 					ReputationService.ChangeRep(Context.User, -3);
-					await ReplyAsync($"Neverno, {user.Username}.");
+					await ReplyAsync($"Неверно, {user.Username}. Ты только что потерял 3 очка рейтинга. Но не расстраивайся, ты сможешь!");
 					break;
 				case AnswerResult.CorrectAnswer:
 					ReputationService.ChangeRep(Context.User, 10);
-					await ReplyAsync($"Верно, {user.Username}.");
+					await ReplyAsync($"Верно, {user.Username}. Получи +10");
 					break;
 			}
 		}
@@ -54,6 +68,17 @@ namespace bot.Modules
 			stream.Seek(0, SeekOrigin.Begin);
 			await Context.Channel.SendFileAsync(stream, "meme.png");
 		}
+
+        [Command("help")]
+        [Alias("инфу","инфа","помощь")]
+        public async Task HelpAsync()
+        {
+            await ReplyAsync("Здравствуй, я бот-загадочник\nЧтобы получить загадку пиши !загадку\nЕсли догадался, срочно напиши !ответ <твоя догадка>\n" +
+                "Я поддерживаю корректировку маленького количества ошибок в слове. Так что не беспокойся, ты не будешь проигрывать из-за уровня своей грамотности\n" +
+                "Пока ждешь следующую загадку, я могу тебя немного развлечь, напиши !картинку\n" +
+                "Если загадка кажется очень сложной, можно ее !пропустить\n" +
+                "Чтобы посмотреть рейтинг кого-либо пиши !ранг <ник#номер>\nЕсли ты просто напишешь !ранг, то увидишь значение своего рейтинга. Удачи!");
+        }
 
 		[Command("rank")]
 		[Alias("ранг", "rep")]
@@ -71,11 +96,11 @@ namespace bot.Modules
 			int rep = ReputationService.GetRepByUser(user);
 			if(rep == -1)
 			{
-				await ReplyAsync("Izvini, takoy so mnoy eshe ne igralsya");
+				await ReplyAsync("Извини, такой со мной еще не игрался");
 			}
 			else
 			{
-				await ReplyAsync($"Ранг пользователя {user} cocтавляет {rep}.");
+				await ReplyAsync($"Ранг пользователя {user} cocтавляет {rep} очков.");
 			}
 		}
 

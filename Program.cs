@@ -9,6 +9,8 @@ using Discord.WebSocket;
 using Discord.Commands;
 using bot.Services;
 
+
+
 namespace bot
 {
 	public enum AnswerResult
@@ -58,8 +60,8 @@ namespace bot
 		private IServiceProvider ConfigureServices()
 		{
 			return new ServiceCollection()
-				.AddSingleton<DiscordSocketClient>()
-				.AddSingleton<CommandService>()
+                .AddSingleton<DiscordSocketClient>(new DiscordSocketClient(new DiscordSocketConfig { WebSocketProvider = Discord.Net.Providers.WS4Net.WS4NetProvider.Instance }))
+                .AddSingleton<CommandService>()
 				.AddSingleton<CommandHandlingService>()
 				.AddSingleton<HttpClient>()
 				.AddSingleton<ZagadkaService>()
