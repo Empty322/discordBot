@@ -3,6 +3,7 @@ using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
 using bot.Services;
+using System;
 
 namespace bot.Modules
 {
@@ -41,7 +42,7 @@ namespace bot.Modules
 		public async Task PlayMusic()
         {
 			if (AudioService.Connected){
-				await AudioService.PlayAsync("Kalimba.mp3");
+				await AudioService.PlayAsync("song1.mp3");
 				return;
 			}
 			await ReplyAsync("Bot must be in a voice channel.");
@@ -52,6 +53,7 @@ namespace bot.Modules
         {
             string file = await DownloadService.Download(url);
             await AudioService.PlayAsync(file);
+			DownloadService.DeleteFile(file);
         }
 
         [Command("stop")]

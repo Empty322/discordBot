@@ -15,7 +15,7 @@ namespace bot.Services
         private readonly string downloadPath;
 
         public DownloadService() {
-            downloadPath = Path.Combine(Directory.GetCurrentDirectory() + "/music");
+            downloadPath = Directory.GetCurrentDirectory() + "\\music";
         }
 
         public async Task<string> Download(string url) {
@@ -27,25 +27,22 @@ namespace bot.Services
 
         private async Task<string> DownloadFromYouTube(string url) {
             TaskCompletionSource<string> tcs = new TaskCompletionSource<string>();
-
             new Thread(() => {
                 string file;
                 int count = 0;
                 do {
-                    file = Path.Combine(downloadPath, "song" + ++count + ".mp3");
+                    file = downloadPath + "\\song" + ++count + ".mp3";
                 } while (File.Exists(file));
-
                 Process youtubedl;
                 ProcessStartInfo youtubedlDownload = new ProcessStartInfo() {
                     FileName = "youtube-dl",
-                    Arguments = $"-x --audio-format mp3 -o \"{file.Replace(".mp3", "%(ext)")}\" {url}",
+                    Arguments = $"-x --audio-format mp3 --prefer-ffmpeg -o \"{file.Replace("mp3", "%(ext)s").Replace(" ", "")}\" {url}",
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,
                     /*UseShellExecute = false*/     //Linux?
                 };
                 youtubedl = Process.Start(youtubedlDownload);
                 youtubedl.WaitForExit();
-                Thread.Sleep(1000);
 
                 if (File.Exists(file))
                     tcs.SetResult(file);
@@ -58,8 +55,12 @@ namespace bot.Services
                 throw new Exception("youtube-dl.exe failed to download!");
 
             result = result.Replace("\n", "").Replace(Environment.NewLine, "");
-
             return result;
         }
-    }
+
+		public void DeleteFile(string file)
+		{
+			File.Delete(file);
+		}
+	}
 }

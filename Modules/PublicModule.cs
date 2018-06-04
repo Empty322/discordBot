@@ -18,7 +18,11 @@ namespace bot.Modules
 		[Alias("загадочку мне", "загадочка", "загадочку", "загадка", "загадку мне")]
 		public async Task Zagadka()
 		{
-			await ReplyAsync(ZagadkaService.GetZagadku());
+			string zagadka = ZagadkaService.GetZagadku();
+			foreach (var g in Discord.Guilds)
+			{
+				await g.DefaultChannel.SendMessageAsync(zagadka);
+			}
 		}
 
 		[Command("ответ")]

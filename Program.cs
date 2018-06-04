@@ -58,7 +58,13 @@ namespace bot
 		private IServiceProvider ConfigureServices()
 		{
 			return new ServiceCollection()
-				.AddSingleton<DiscordSocketClient>()
+				.AddSingleton<DiscordSocketClient>(
+                    new DiscordSocketClient(
+                        new DiscordSocketConfig{
+                            WebSocketProvider = Discord.Net.Providers.WS4Net.WS4NetProvider.Instance
+                        }
+                    )
+                )
 				.AddSingleton<AudioService>()
 				.AddSingleton<DownloadService>()
 				.AddSingleton<CommandService>()

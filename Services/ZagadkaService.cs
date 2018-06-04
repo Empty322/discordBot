@@ -54,9 +54,6 @@ namespace bot.Services
 			}
 			times += Math.Abs(ans.Length - answer.Length);
 			double difference = times / (double)answer.Length;
-			//Console.WriteLine(times);
-			//Console.WriteLine(answer.Length);
-			//Console.WriteLine(difference);
 			if(difference > 0.2)
 			{
 				return false;
